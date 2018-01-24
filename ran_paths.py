@@ -125,6 +125,6 @@ def wave_maker(mag_array,lag,delta_h, time_lag,xspace):
         i+=1
     return p
 xspace = np.linspace(0,sum(lag)+10,100)
-p=wave_maker(mag_array,lag,1, 5,xspace)
+p=wave_maker(mag_array,lag,1, 1,xspace)
 jum=wave_maker(mag_array,lag,-1, 0,xspace)
 res=p+jum
