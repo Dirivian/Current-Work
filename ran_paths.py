@@ -97,8 +97,8 @@ mat3100=mat3[:20]
 def lag_calculator(n,l,r,m1,m2,w1,w2):
     return 2*(n[0]+n[1]-n[2])*w1*np.sqrt(r/m1)+2*n[1]*w2*np.sqrt(r/m2)
 lag=[]
-w1=0.1
-w2=0.1
+w1=1
+w2=1
 mag_array=[]
 for n in mat3100:
     lag.append(lag_calculator(n,l,r,m1,m2,w1,w2))
@@ -128,3 +128,5 @@ xspace = np.linspace(0,sum(lag)+10,100)
 p=wave_maker(mag_array,lag,1, 1,xspace)
 jum=wave_maker(mag_array,lag,-1, 0,xspace)
 res=p+jum
+plt.plot(xspace,res)
+plt.title('Two middle layers,w=2')
