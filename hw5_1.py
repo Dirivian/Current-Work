@@ -7,13 +7,17 @@ Created on Tue Feb 13 18:14:15 2018
 import numpy as np
 import matplotlib.pyplot as plt
 N = 50
-a = -4*np.ones(N**2)
-b = np.ones(N**2-1)
-c = np.ones(N**2-N)
-def multidiag(a, b, c, N, k1=-1, k2=0, k3=1):
-    return np.diag(a, k2) + np.diag(b, k1) + np.diag(b, k3) + np.diag(c, N)+ np.diag(c,- N)
-A = multidiag(a,b,c,N)
-
+a = -20*np.ones(N)
+b = 4*np.ones(N-1)
+c = 4*np.ones(N)
+d= np.ones(N-1)
+I = np.eye(N)
+def tridiag(a, b, c, k1=-1, k2=0, k3=1):
+    return np.diag(a, k1) + np.diag(b, k2) + np.diag(c, k3)
+T = tridiag(b,a,b)
+R = tridiag(d,c,d)
+S = tridiag(d,np.zeros(N),d)
+A = np.kron(I,T)+np.kron(S,R)
 def f(i,N):
     h = 1/(N+1) 
     x = (i%(N+1))*h
@@ -32,3 +36,4 @@ for row in A:
 fv = (h**2)*fvec
 x = np.linalg.solve(A, fv)
 xn = np.reshape(x,(N,N))
+plt.imshow(xn)
