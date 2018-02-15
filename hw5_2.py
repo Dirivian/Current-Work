@@ -6,14 +6,16 @@ Created on Tue Feb 13 18:14:15 2018
 """
 import numpy as np
 import matplotlib.pyplot as plt
-N = 50
-a = -4*np.ones(N**2)
-b = np.ones(N**2-1)
-c = np.ones(N**2-N)
-def multidiag(a, b, c, N, k1=-1, k2=0, k3=1):
-    return np.diag(a, k2) + np.diag(b, k1) + np.diag(b, k3) + np.diag(c, N)+ np.diag(c,- N)
-A = multidiag(a,b,c,N)
-
+N = 19
+a = -4*np.ones(N)
+b = np.ones(N-1)
+c = np.ones(N)
+I = np.eye(N)
+def tridiag(a, b, c, k1=-1, k2=0, k3=1):
+    return np.diag(a, k1) + np.diag(b, k2) + np.diag(c, k3)
+T = tridiag(b,a,b)
+S = np.diag(b, -1)+ np.diag(b, 1)
+A = np.kron(I,T)+np.kron(S,I )
 def f(i,N):
     h = 1/(N+1) 
     x = (i%(N+1))*h
@@ -27,9 +29,10 @@ for i in range(1,N**2+1):
 h = 1/(N+1) 
 i=0
 for row in A:
-    fvec[i]+= sum(row)
+    fvec[i]= fvec[i]*(h**2)+ sum(row)
     i+=1
-fv = (h**2)*fvec
-x = np.linalg.solve(A, fv)
+fv = 6*(h**2)*fvec
+x = np.linalg.solve(A, fvec)
 xn = np.reshape(x,(N,N))
 plt.imshow(xn)
+print(np.linalg.norm(xn-x100[::6,::6], 2))
