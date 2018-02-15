@@ -6,7 +6,7 @@ Created on Tue Feb 13 18:14:15 2018
 """
 import numpy as np
 import matplotlib.pyplot as plt
-N = 120
+N = 100
 a = -20*np.ones(N)
 b = 4*np.ones(N-1)
 c = 4*np.ones(N)
@@ -26,8 +26,9 @@ def f(i,N):
     x = (i - (g-1)*N)*h
     return x**2 + y**2
 fvec = np.array([])
+h = 1/(N+1)
 for i in range(1,N**2+1):
-    fvec = np.append(fvec,f(i,N**2))
+    fvec = np.append(fvec,f(i,N**2)) +(h**2/3)
 h = 1/(N+1) 
 i=0
 '''
@@ -46,4 +47,4 @@ fv = 6*(h**2)*fvec
 x = np.linalg.solve(A, fvec)
 xn = np.reshape(x,(N,N))
 plt.imshow(xn)
-print(np.linalg.norm(xn-x150[::10,::10], 2))
+#print(np.linalg.norm(xn-x150[::10,::10], 2))
