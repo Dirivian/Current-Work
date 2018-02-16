@@ -1,0 +1,48 @@
+ The weak formulation of our PDE is given by
+ 
+ \[\langle L u,v\rangle = \langle f,v \rangle \]
+ 
+ The way we solved for u is by representing u as 
+  \[\hat{u} = \sum_{j=0}^{N} c_j \psi_j\]
+where the $\psi$ are bilinear piecewise functions. Since u has inhomogeneous boundaries, we need basis functions for the boundaries.
+
+Then, we solve a system of equations
+  \[\langle L u,\psi_j\rangle = \langle f,\psi_j \rangle \]
+
+\[\langle f,\psi_j \rangle = \int \int_{\Omega} f(x,y) psi_j dx dy  \]
+
+\[\langle L u,\psi_j\rangle = \int \int_{\Omega} (\hat{u}_{xx} \psi_j + \hat{u}_{yy}\psi_j)dx dy \]
+\[= - \int \int_{\Omega} (\hat{u}_{x}\psi_j + \hat{u}_{y} \psi_j)dx dy + 
+\int_{d \Omega} (\hat{u}_{n}\psi_j )dr
+\]
+\[= - \sum_{k=0}^{N} c_k \int \int_{\Omega} ({\psi_k}_{x}\psi_j + {\psi_k}_{y} \psi_j)dx dy + 
+\int_{d \Omega} ({\psi_k}_{n}\psi_j )dr
+\]
+
+The second term doesn't vanish because we have non-zero boundaries. 
+Evaluating the integrals, we get a system of equations which we can solve to find the coefficients.
+
+The corner boundary basis functions are different from the interior boundary basis functions.
+ The interior ones are rectangular like the ones below  
+ At the top
+   \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+       \frac{(x-x_{i-1})(y-y_1)}{(x_i-x_{i-1})(0-y_1)}, & \text{for } [x_{i-1},x_{i}]x[0,y_1]\\
+    \frac{(x-x_{i+1})(y-y_1)}{(x_i-x_{i+})(0-y_1)}, & \text{for } [x_{i},x_{i+1}]x[0,y_1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]
+        At the bottom
+           \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+         \frac{(x-x_{i-1})(y-y_{n-1})}{(x_i-x_{i-1})(1-y_{n-1})}, & \text{for } [x_{i-1},x_{i}]x[y_{n-1},1]\\
+ \frac{(x-x_{i+1})(y-y_{n-1})}{(x_i-x_{i+1})(1-y_{n-1})}, & \text{for } [x_{i},x_{i+1}]x[y_{n-1},1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]
+        Similarly, we can write down left and right interior boundary basis functions
+A corner boundary will be non-zero only on half the rectangle. For example, in the top left corner,
+   \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+
+    \frac{(x-x_{i+1})(y-y_1)}{(x_i-x_{i+})(0-y_1)}, & \text{for } [x_{i},x_{i+1}]x[0,y_1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]

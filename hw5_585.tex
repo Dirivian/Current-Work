@@ -261,7 +261,72 @@ when $\Omega$ is the unit square $(0,1) \times (0,1)$.
 
 {\bf Solution:}
 
+The weak formulation of our PDE is given by
+ 
+ \[\langle L u,v\rangle = \langle f,v \rangle \]
+  The way we solved for u is by representing u as 
+  \[\hat{u} = \sum_{j=0}^{N} c_j \psi_j\]
+where the $\psi$ are bilinear piecewise functions. Since u has inhomogeneous boundaries, we need basis functions for the boundaries.
+
+Then, we solve a system of equations
+  \[\langle L u,\psi_j\rangle = \langle f,\psi_j \rangle \]
+
+\[\langle f,\psi_j \rangle = \int \int_{\Omega} f(x,y) \psi_j dx dy  \]
+
+\[\langle L u,\psi_j\rangle = \int \int_{\Omega} (\hat{u}_{xx} \psi_j + \hat{u}_{yy}\psi_j)dx dy \]
+\[= - \int \int_{\Omega} (\hat{u}_{x}\psi_j + \hat{u}_{y} \psi_j)dx dy + 
+\int_{d \Omega} (\hat{u}_{n}\psi_j )dr
+\]
+\[= - \sum_{k=0}^{N} c_k \int \int_{\Omega} ({\psi_k}_{x}\psi_j + {\psi_k}_{y} \psi_j)dx dy + \sum_{k=0}^{N} c_k 
+\int_{d \Omega} ({\psi_k}_{n}\psi_j )dr
+\]
+
+The second term doesn't vanish because we have non-zero boundaries. 
+Evaluating the integrals, we get a system of equations which we can solve to find the coefficients.
+
+The corner boundary basis functions are different from the interior boundary basis functions.
+ The interior ones are rectangular like the ones below 
+ 
+ At the top
+   \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+       \frac{(x-x_{i-1})(y-y_1)}{(x_i-x_{i-1})(0-y_1)}, & \text{for } [x_{i-1},x_{i}]\times[0,y_1]\\
+    \frac{(x-x_{i+1})(y-y_1)}{(x_i-x_{i+})(0-y_1)}, & \text{for } [x_{i},x_{i+1}]\times[0,y_1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]
+        At the bottom
+           \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+         \frac{(x-x_{i-1})(y-y_{n-1})}{(x_i-x_{i-1})(1-y_{n-1})}, & \text{for } [x_{i-1},x_{i}]\times[y_{n-1},1]\\
+ \frac{(x-x_{i+1})(y-y_{n-1})}{(x_i-x_{i+1})(1-y_{n-1})}, & \text{for } [x_{i},x_{i+1}]\times[y_{n-1},1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]
+       On the left,
+           \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+         \frac{(x-x_{1})(y-y_{i-1})}{(-x_{1})(y_i-y_{i-1})}, & \text{for } [0,x_{1}]\times [y_{i-1},y_{i}]\\
+  \frac{(x-x_{1})(y-y_{i+1})}{(0-x_{1})(y_i-y_{i+1})}, & \text{for } [0,x_{1}]\times [y_{i},y_{i+1}]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]
+         On the right,
+           \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+         \frac{(x-x_{n-1})(y-y_{i-1})}{(1-x_{n-1})(y_i-y_{i-1})}, & \text{for } [x_{n-1},1]\times [y_{i-1},y_{i}]\\
+  \frac{(x-x_{n-1})(y-y_{i+1})}{(1-x_{n-1})(y_i-y_{i+1})}, & \text{for } [x_{n-1},1]\times [y_{i},y_{i+1}]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]      
+
+A corner boundary will be non-zero only on half the rectangle(because the other half is outside our domain). For example, in the top left corner,
+   \[
+    \psi(x, y) = \left\{\begin{array}{lr}
+ 
+    \frac{(x-x_{i+1})(y-y_1)}{(x_i-x_{i+})(0-y_1)}, & \text{for } [x_{i},x_{i+1}]\times[0,y_1]\\
+        0, & \text{elsewhere } 
+        \end{array}\right\} \]   
+        
+  Similarly, we can write down boundary basis functions for the other 3 corners.
 \item
+
 The key to efficiency in the \verb+chebfun+ package, which you used in a previous homework
 exercise, is the ability to rapidly translate between the values of a function at the
 Chebyshev points, $\cos ( \pi j/n )$, $j=0, \ldots , n$, and the coefficients $a_0 , \ldots , a_n$,
@@ -294,16 +359,84 @@ $a_0 , \ldots , a_n$ from the function values $f( \cos ( k \pi / n ) )$, what me
 Thus, 
 \[ p ( \cos ( k \pi / n ) ) = \frac{1}{2} (Re(\sum_{j=0}^{2n-1} a_j e^{ j k \pi / n  }) + a_0 +a_n (-1)^k) \]
 The first term can be calculated using the FFT
+
+Now, the inverse problem - finding the Chebyshev coefficients.
+
 \[ p ( k) = \frac{1}{2} (Re(\sum_{j=0}^{2n-1} a_j e^{ j k \pi / n  }) + a_0 +a_n (-1)^k) \]
 \[ \sum_{k=0}^n 2p ( k) = \sum_{k=0}^n  Re(\sum_{j=0}^{2n-1} a_j e^{ j k \pi / n  }) +  \sum_{k=0}^n  a_0 + \sum_{k=0}^n a_n (-1)^k \]
 \[ \sum_{k=0}^n 2 p ( k) = \sum_{k=0}^n  Re(\sum_{j=0}^{2n-1} a_j e^{ j k \pi / n  }) +  p(0)+ p(n)\]
 \[ p (0) +\sum_{k=1}^{n-1} 2 p ( k) + p(n) = \sum_{k=0}^n  \sum_{j=0}^{2n-1} a_j Re(e^{ j k \pi / n  }) \]
-\[ p (0) +\sum_{k=1}^{n-1} 2 p ( k) + p(n) = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j Re(e^{ j k \pi / n  }) \]
-We can see that
-\[ p (0)  = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j  \]
-\[ p (n)  = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j (-1)^n \]
-This looks like values obtained after a DFT.
-Thus, taking the ifft of the vector (p(0), p(1),p(2), ...p(n-1), p(n), p(n-1),p(n-2),..., p(2),p(1)) can get you back the coefficients $a_n$
+\[ p (0) +\sum_{k=1}^{n-1} p ( k)+\sum_{k=1}^{n-1} p ( k) + p(n) = \sum_{k=0}^n  \sum_{j=0}^{2n-1} a_j Re(e^{ j k \pi / n  }) \]
+Thus, we can see some intuition behind arranging the p values in a particular order to invert the Fourier transform on the right hand side. This intuition is mostly geometric as shown in the last page of this homework.
+%\[ p (0) +\sum_{k=1}^{n-1} 2 p ( k) + p(n) = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j Re(e^{ j k \pi / n  }) \]
+%We can see that
+%\[ p (0)  = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j  \]
+%\[ p (n)  = \sum_{j=0}^{2n-1}  \sum_{k=0}^n  a_j (-1)^n \]
+%This looks like values obtained after a DFT.
+
+  \begin{align}
+    p &= \begin{bmatrix}
+           p(0) \\
+           p(1) \\
+           p(2) \\
+           \vdots \\
+           p(N-1) \\
+           p(N)\\
+           p(N-1) \\
+           \vdots \\
+           p(2) \\
+           p(1)\\
+         \end{bmatrix}
+  \end{align}
+  
+  Arranging our p values this way in the order of a Fourier Transform terms allows us to take an inverse Fourier Transform.
+  
+  \[IFFT\begin{bmatrix}
+           p(0) \\
+           p(1) \\
+           p(2) \\
+           \vdots \\
+           p(N-1) \\
+           p(N)\\
+           p(N-1) \\
+           \vdots \\
+           p(2) \\
+           p(1)\\
+         \end{bmatrix}= 2N \begin{bmatrix}
+           a(0) \\
+           a(1) \\
+           a(2) \\
+           \vdots \\
+           a(N-1) \\
+           a(N)\\
+           a(N-1) \\
+           \vdots \\
+           a(2) \\
+           a(1)\\
+         \end{bmatrix}\]
+  
+Thus, taking the ifft of the vector (p(0), p(1),p(2), ...p(n-1), p(n), p(n-1),p(n-2),..., p(2),p(1)) can get you back a vector which contains the coefficients $a_n$. Rearranging the IFFT values should return the $a_n$. Writing up code to do this in this way verifies this.
+
+\begin{lstlisting}[style=myPythonstyle]
+from numpy import *
+from numpy.fft import fft,ifft
+
+def cheb(y):
+    N = len(y) - 1
+    yt = real(fft(r_[y,y[-2:0:-1]]))
+    yt = yt/(2*N)
+    yt = r_[yt[0],yt[1:N]+yt[-1:N:-1],yt[N]]
+
+    return yt
+
+\end{lstlisting}
+
+\begin{lstlisting}[style=myPythonstyle]
+cheb([1,2,3,4]) = [ 2.5 , -1.33333333,  0. , -0.16666667]
+
+\end{lstlisting}
+which are the right Chebyshev coefficients ($\sum a_n $= 1, $\sum a_n (-1)^n$=4)
 \end{enumerate}
 
 \end{document}
+
