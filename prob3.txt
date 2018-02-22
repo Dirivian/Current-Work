@@ -42,7 +42,7 @@ The corner boundary basis functions are different from the interior boundary bas
 A corner boundary will be non-zero only on half the rectangle. For example, in the top left corner,
    \[
     \psi(x, y) = \left\{\begin{array}{lr}
-
+ 
     \frac{(x-x_{i+1})(y-y_1)}{(x_i-x_{i+})(0-y_1)}, & \text{for } [x_{i},x_{i+1}]x[0,y_1]\\
         0, & \text{elsewhere } 
         \end{array}\right\} \]
