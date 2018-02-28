@@ -67,8 +67,9 @@ def green(u):
     resy = resy +[[abs(u-u_t)]]
     
 def CGsteps(A,b):
-    f =np.ones(N)
+    
     global f,Aw,resy, u_t
+    f =np.ones(N)
     
     u_i = u_init(x)
     resCG = []
