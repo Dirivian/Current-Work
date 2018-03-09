@@ -83,20 +83,23 @@ def makeA(N):
     A = ((N+1)**2)*tridiag(b,-2*a,b)
     return A
 g = []    
-for n in range(10,200,2):       
+for n in range(10,300,2):       
         x_0 = 2*np.ones(n)
         x1 = np.linspace(0,1,n+2)        
         f = np.sin(np.pi*x1[1:-1])
         g+= [multigrid(f,x_0,GS_step)[1]]
         
 s = []    
-for n in range(10,200,2):       
+for n in range(10,300,2):       
         x_0 = 2*np.ones(n)
         x1 = np.linspace(0,1,n+2)        
         f = np.sin(np.pi*x1[1:-1])
         s+= [multigrid(f,x_0,weighted_step)[1]]
 
     
-    
+x = np.linspace(10,300,145)  
+plt.plot(x,g,label = 'Gauss Seidel') 
+plt.plot(x,s,label = 'Weighted Jacobi')
+plt.legend() 
     
     
