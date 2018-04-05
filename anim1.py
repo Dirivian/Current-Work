@@ -92,6 +92,7 @@ anim = animation.FuncAnimation(fig, animate2, init_func=init,
 # the video can be embedded in html5.  You may need to adjust this for
 # your system: for more information, see
 # http://matplotlib.sourceforge.net/api/animation_api.html
-#anim.save('basic_animation.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
+#ani.save('MovWave.mpeg', writer="ffmpeg", fps=30)
+anim.save('basic.mp4', fps=30, extra_args=['-vcodec', 'libx264'])
 
 plt.show()
