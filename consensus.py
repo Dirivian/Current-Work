@@ -31,7 +31,10 @@ def Laplacian(X,t):
     L4 = tridiag(a,b,a)
     L4[0,0]=-1
     L4[4,4]=-1
-    return L3.dot(X)
+    L1 = np.ones((5,5))
+    for i in range(5):
+        L1[i,i]=-4
+    return L1.dot(X)+ [1,0,1,0,0]
 
 fig = plt.figure()
 #ax = fig.gca(projection='3d')

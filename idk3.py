@@ -29,7 +29,7 @@ def slab(hl,hr,a):
 	return manpack+fbab
 	
 a = np.linspace(1,100, 100)
-print(slab(hl,hr,0.00000001))
+print(slab(hl,hr,0.00001))
 
 jason = [slab(hl,hr,ae) for ae in a]
 
