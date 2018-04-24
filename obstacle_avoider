@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr 23 21:57:59 2018
+
+@author: jithin
+"""
+import numpy as np
+import matplotlib.pyplot as plt
+obstacle_list = np.array([[1,0],[2,2],[0,3], [-10,-1]])
+
+x_0 =np.array([1,2])
+x=x_0
+j =[x]
+dt = 0.1
+
+def obstacle_force(x):
+    w=0
+    for obstacle in obstacle_list:
+        a_1 = obstacle[0]
+        a_2 = obstacle[1]
+        w += np.array([2*(x[0]-a_1)/((x[0]-a_1)**2+ (x[1]-a_2)**2), 2*(x[1]-a_2)/((x[0]-a_1)**2+ (x[1]-a_2)**2)])
+    return w
+
+for i in range(100):
+    for obstacle in obstacle_list:
+        a_1 = obstacle[0]
+        a_2 = obstacle[1]
+        plt.plot([a_1], [a_2], marker='o', markersize=3, color="red")
+        x = x + dt*obstacle_force(x)
+    j+=[x]
+    
+
+
+j = np.array(j)
+plt.plot(j[:,0],j[:,1])

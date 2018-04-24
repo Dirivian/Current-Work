@@ -25,9 +25,10 @@ def vec(k):
 r=480
 l = 4500
 kfinal = -(np.sqrt(r)-np.sqrt(l))
-kspace =np.linspace(0,kfinal)
-v= [vec(k) for k in kspace]
+kspace =np.linspace(0,kfinal,2*t_r/dt)
+c_g = (l/r)**0.25
+v= [vec(k)*c_g for k in kspace]
 w = 16333
 slope = (l-r)/w
 alphe = 4*np.sqrt(r)/slope
-plt.plot(300+alphe*kspace,v)
+plt.plot(alphe*kspace,v[::-1])
